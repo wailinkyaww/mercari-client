@@ -1,4 +1,5 @@
-import { TMessage } from '@/services/search.service'
+import { Skeleton } from '@/components/skeleton'
+import type { TMessage } from '@/services/search.service'
 
 function ChatProfile(props: { role: 'assistant' | 'user' }) {
   const { role } = props
@@ -39,6 +40,19 @@ function AssistantMessage(props: {
   )
 }
 
+function AssistantLoadingMessage() {
+  return (
+    <div className='flex gap-4'>
+      <ChatProfile role='assistant' />
+      <div className='space-y-2 w-full mt-1'>
+        <Skeleton className='w-full h-3' />
+        <Skeleton className='w-full h-3' />
+        <Skeleton className='w-2/3 h-3' />
+      </div>
+    </div>
+  )
+}
+
 export function Message(props: { message: TMessage }) {
   const { message } = props
 
@@ -46,7 +60,10 @@ export function Message(props: { message: TMessage }) {
     return <UserMessage message={message} />
   }
 
-  if (message.role === 'assistant') {
-    return <AssistantMessage message={message} />
+  // if the content is empty, we assumed that we are waiting for the response from the API.
+  if (message.role === 'assistant' && message.content === '') {
+    return <AssistantLoadingMessage />
   }
+
+  return <AssistantMessage message={message} />
 }
