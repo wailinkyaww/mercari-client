@@ -1,19 +1,28 @@
 import { Skeleton } from '@/components/skeleton'
 import type { TMessage } from '@/services/search.service'
+import Image from 'next/image'
 
 function ChatProfile(props: { role: 'assistant' | 'user' }) {
   const { role } = props
 
-  return (
-    <div className='w-9 h-9 rounded-full border flex items-center justify-center bg-neutral-200/70 shrink-0'>
-      {role === 'user' && (
-        <p className='text-sm font-semibold text-neutral-500'>You</p>
-      )}
-      {role === 'assistant' && (
-        <p className='text-sm font-semibold text-neutral-500'>AI</p>
-      )}
-    </div>
-  )
+  if (role === 'user')
+    return (
+      <div className='w-9 h-9 rounded-full border flex items-center justify-center bg-neutral-200/70 shrink-0'>
+        <p className='text-sm font-bold text-neutral-500'>You</p>
+      </div>
+    )
+
+  if (role === 'assistant') {
+    return (
+      <Image
+        src='/logo.png'
+        alt='Mercari Logo'
+        width={36}
+        height={36}
+        className='rounded-full'
+      />
+    )
+  }
 }
 
 function UserMessage(props: { message: { role: 'user'; content: string } }) {
