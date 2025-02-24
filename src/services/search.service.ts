@@ -1,9 +1,14 @@
 import { constructFullUrl } from '@/utils/url'
 
-type TMessage = {
-  role: 'user' | 'assistant'
-  content: string
-}
+export type TMessage =
+  | {
+      role: 'user'
+      content: string
+    }
+  | {
+      role: 'assistant'
+      content: string
+    }
 
 /**
  * @param payload.messages - Array of messages to generate the search completion.
@@ -25,16 +30,13 @@ export async function generateSearchCompletion(payload: {
   const endpoint = '/generate-search-completion'
   const fullUrl = constructFullUrl(baseUrl, endpoint)
 
-  const response = await fetch(
-    fullUrl,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      keepalive: true,
-      body: JSON.stringify({ messages }),
-      signal
-    }
-  )
+  const response = await fetch(fullUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    keepalive: true,
+    body: JSON.stringify({ messages }),
+    signal,
+  })
 
   if (!response.ok) {
     throw new Error('Something went wrong, please try again.')
@@ -44,9 +46,7 @@ export async function generateSearchCompletion(payload: {
     return ''
   }
 
-  const reader = response.body
-    .pipeThrough(new TextDecoderStream())
-    .getReader()
+  const reader = response.body.pipeThrough(new TextDecoderStream()).getReader()
 
   while (true) {
     const { done, value } = await reader.read()
