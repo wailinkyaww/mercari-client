@@ -1,7 +1,8 @@
 'use client'
 
-import { type ComponentRef, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Message } from '@/components/message'
+import { ChatInput } from '@/components/chat-input'
 import { type TMessage } from '@/services/search.service'
 
 export default function Home() {
@@ -10,7 +11,9 @@ export default function Home() {
     { role: 'assistant', content: 'Hi! How can I help you today?' },
   ])
 
-  const textInputRef = useRef<ComponentRef<'input'>>(null)
+  function onUserMessageSubmit(content: string) {
+    setMessages([...messages, { role: 'user', content }])
+  }
 
   return (
     // height calculation - full screen height minus margin on top and bottom
@@ -21,26 +24,7 @@ export default function Home() {
         })}
       </div>
 
-      <input
-        ref={textInputRef}
-        type='text'
-        className='border border-neutral-300 rounded-lg p-2 w-full'
-        placeholder='What do you want to buy on Mercari today...'
-        onKeyUp={(event) => {
-          // on enter key press
-          if (event.key === 'Enter') {
-            setMessages([
-              ...messages,
-              { role: 'user', content: event.currentTarget.value },
-            ])
-
-            // clear the input text box
-            if (textInputRef.current) {
-              textInputRef.current.value = ''
-            }
-          }
-        }}
-      />
+      <ChatInput onSubmit={onUserMessageSubmit} />
     </div>
   )
 }
