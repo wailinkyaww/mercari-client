@@ -1,14 +1,27 @@
 import { constructFullUrl } from '@/utils/url'
 
+// Blocks are used to display the status updates in the UIl
+export type TStatusBlock =
+  | {
+      blockType: 'status_update'
+      status: 'query_analysis'
+      message: string
+    }
+  | {
+      blockType: 'status_update'
+      status: 'extracting_filters'
+      message: string
+    }
+  | {
+      blockType: 'status_update'
+      status: 'filters_extraction_done'
+      message: string
+      filters: object
+    }
+
 export type TMessage =
-  | {
-      role: 'user'
-      content: string
-    }
-  | {
-      role: 'assistant'
-      content: string
-    }
+  | { role: 'user'; content: string }
+  | { role: 'assistant'; content: string; blocks: TStatusBlock[] }
 
 /**
  * @param payload.messages - Array of messages to generate the search completion.
@@ -34,7 +47,16 @@ export async function generateSearchCompletion(payload: {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     keepalive: true,
-    body: JSON.stringify({ messages }),
+    body: JSON.stringify({
+      // we don't need status updates to use for the new completion
+      // we are only interested in the main message content
+      messages: messages.map((message) => {
+        return {
+          role: message.role,
+          content: message.content,
+        }
+      }),
+    }),
     signal,
   })
 
