@@ -11,15 +11,15 @@ import { type TMessage } from '@/services/search.service'
 export default function Home() {
   const [messages, setMessages] = useState<TMessage[]>([])
 
-  const replaceBlocks = useCallback(
+  const updateLastMessage = useCallback(
     (blocks: TBlock[]) => {
       setMessages((messages) => {
-        const lastMessage = messages[messages.length - 1]
-
-        // This shouldn't happen
+        let lastMessage = messages[messages.length - 1]
         if (lastMessage.role !== 'assistant') return messages
 
-        lastMessage.blocks = blocks
+        lastMessage = structuredClone(lastMessage)
+        lastMessage.blocks.push(...blocks)
+
         return [...messages.slice(0, -1), lastMessage]
       })
     },
@@ -36,12 +36,14 @@ export default function Home() {
     await generateSearchCompletion({
       messages: [...messages, { role: 'user', content }],
       onChunkReceived: (chunk) => {
+        console.log('called!')
         const blocks = chunk
           .split('\n')
           .filter(Boolean)
           .map((block) => JSON.parse(block.trim()))
+        console.log(blocks)
 
-        replaceBlocks(blocks)
+        updateLastMessage(blocks)
       },
     })
   }
