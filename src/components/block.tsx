@@ -21,7 +21,7 @@ export default function FiltersDisplay(props: {
         <div
           key={index}
           className={twMerge(
-            'flex bg-neutral-200 py-2',
+            'flex bg-[#6778f5]/20 py-2',
             index % 2 === 0 && 'bg-neutral-100',
             index === 0 && 'rounded-t',
             index === filterRows.length - 1 && 'rounded-b',
