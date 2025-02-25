@@ -11,7 +11,7 @@ import { type TMessage } from '@/services/search.service'
 export default function Home() {
   const [messages, setMessages] = useState<TMessage[]>([])
 
-  const updateLastMessage = useCallback(
+  const replaceBlocks = useCallback(
     (blocks: TBlock[]) => {
       setMessages((messages) => {
         const lastMessage = messages[messages.length - 1]
@@ -19,7 +19,7 @@ export default function Home() {
         // This shouldn't happen
         if (lastMessage.role !== 'assistant') return messages
 
-        lastMessage.blocks.push(...blocks)
+        lastMessage.blocks = blocks
         return [...messages.slice(0, -1), lastMessage]
       })
     },
@@ -41,7 +41,7 @@ export default function Home() {
           .filter(Boolean)
           .map((block) => JSON.parse(block.trim()))
 
-        updateLastMessage(blocks)
+        replaceBlocks(blocks)
       },
     })
   }
