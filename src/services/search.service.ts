@@ -1,5 +1,12 @@
 import { constructFullUrl } from '@/utils/url'
 
+export type TProduct = {
+  product_name: string
+  product_price: string
+  product_is_on_sale: boolean
+  product_image_url: string
+}
+
 export type TBlock =
   | {
       blockType: 'status_update'
@@ -16,6 +23,18 @@ export type TBlock =
       status: 'filters_extraction_done'
       message: string
       filters: object
+    }
+  | {
+      blockType: 'status_update'
+      status: 'scraping_products'
+      message: string
+      url: string
+    }
+  | {
+      blockType: 'status_update'
+      status: 'products_scraped'
+      message: string
+      products: TProduct[]
     }
   | {
       blockType: 'completion_response'

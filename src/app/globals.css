@@ -5,3 +5,8 @@
 :root {
     --primary: #6778f5;
 }
+
+* {
+    scrollbar-color: #e3e3e3 transparent;
+    scrollbar-width: thin;
+}

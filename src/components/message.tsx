@@ -63,7 +63,7 @@ function AssistantMessage(props: { message: TAssistantMessage }) {
 
       <div className='flex flex-col'>
         {message.blocks.map((block, index) => (
-          <div key={index} className='flex flex-col'>
+          <div key={index} className='flex flex-col items-start'>
             <Block block={block} />
             {index !== message.blocks.length - 1 && <Divider />}
           </div>

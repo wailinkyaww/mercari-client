@@ -1,7 +1,8 @@
-import type { TBlock } from '@/services/search.service'
 import { twMerge } from 'tailwind-merge'
+import type { TBlock, TProduct } from '@/services/search.service'
+import Image from 'next/image'
 
-export default function FiltersDisplay(props: {
+function FiltersDisplay(props: {
   filters: Record<string, string | number | null>
 }) {
   const { filters } = props
@@ -37,6 +38,37 @@ export default function FiltersDisplay(props: {
   )
 }
 
+function ProductCard(props: { product: TProduct }) {
+  const { product } = props
+
+  return (
+    <div className='flex flex-col gap-2'>
+      <div
+        style={{
+          position: 'relative',
+          width: '150px',
+          height: '150px',
+        }}
+        className='rounded overflow-hidden'
+      >
+        <Image
+          alt={product.product_name}
+          src={product.product_image_url}
+          fill
+          style={{
+            objectFit: 'cover',
+          }}
+        />
+      </div>
+
+      <div>
+        <p className='line-clamp-1'>{product.product_name}</p>
+        <p>{product.product_price}</p>
+      </div>
+    </div>
+  )
+}
+
 export function Block(props: { block: TBlock }) {
   const { block } = props
 
@@ -68,6 +100,36 @@ export function Block(props: { block: TBlock }) {
       <div className='py-2 space-y-2'>
         <p>{block.message}</p>
         <FiltersDisplay filters={filters} />
+      </div>
+    )
+  }
+
+  if (block.status === 'scraping_products') {
+    return (
+      <div className='py-1 flex gap-2'>
+        <p>{block.message} - </p>
+        <a
+          href={block.url}
+          target='_blank'
+          rel='noreferrer'
+          className='text-blue-700 underline'
+        >
+          See on Mercari
+        </a>
+      </div>
+    )
+  }
+
+  if (block.status === 'products_scraped') {
+    return (
+      <div className='py-1 space-y-2'>
+        <p>{block.message}</p>
+
+        <div className='flex gap-4 overflow-y-auto max-w-2xl'>
+          {block.products.map((product, index) => {
+            return <ProductCard product={product} key={index} />
+          })}
+        </div>
       </div>
     )
   }
