@@ -46,7 +46,9 @@ function UserMessage(props: { message: TUserMessage }) {
 
   return (
     <div className='flex gap-4 justify-end'>
-      <p className='mt-1'>{message.content}</p>
+      <div className='bg-[#6778f5]/10 mt-1 max-w-[75%] py-2 px-4 rounded'>
+        <p>{message.content}</p>
+      </div>
       <ChatProfile role={message.role} />
     </div>
   )
