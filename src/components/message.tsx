@@ -31,6 +31,16 @@ function ChatProfile(props: { role: 'assistant' | 'user' }) {
   }
 }
 
+function Divider() {
+  return (
+    <div className='flex flex-col gap-0.5 justify-center my-2 ml-2'>
+      <div className='h-3 bg-neutral-400 w-0.5 ml-[2px]' />
+      <div className='w-1.5 h-1.5 rounded-full bg-neutral-400' />
+      <div className='h-3 bg-neutral-400 w-0.5 ml-[2px]' />
+    </div>
+  )
+}
+
 function UserMessage(props: { message: TUserMessage }) {
   const { message } = props
 
@@ -49,9 +59,12 @@ function AssistantMessage(props: { message: TAssistantMessage }) {
     <div className='flex gap-4'>
       <ChatProfile role={message.role} />
 
-      <div>
+      <div className='flex flex-col'>
         {message.blocks.map((block, index) => (
-          <Block block={block} key={index} />
+          <div key={index} className='flex flex-col'>
+            <Block block={block} />
+            {index !== message.blocks.length - 1 && <Divider />}
+          </div>
         ))}
       </div>
     </div>

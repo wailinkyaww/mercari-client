@@ -36,7 +36,6 @@ export default function Home() {
     await generateSearchCompletion({
       messages: [...messages, { role: 'user', content }],
       onChunkReceived: (chunk) => {
-        console.log('called!')
         const blocks = chunk
           .split('\n')
           .filter(Boolean)
@@ -56,7 +55,7 @@ export default function Home() {
         messages.length === 0 && 'justify-center',
       )}
     >
-      <div className='flex flex-col gap-4 '>
+      <div className='flex flex-col gap-4'>
         {messages.map((message, index) => {
           return <Message key={index} message={message} />
         })}
