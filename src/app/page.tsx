@@ -5,22 +5,22 @@ import { useCallback, useState } from 'react'
 import { Message } from '@/components/message'
 import { ChatInput } from '@/components/chat-input'
 
-import { generateSearchCompletion } from '@/services/search.service'
+import { generateSearchCompletion, TBlock } from '@/services/search.service'
 import { type TMessage } from '@/services/search.service'
 
 export default function Home() {
   const [messages, setMessages] = useState<TMessage[]>([])
 
   const updateLastMessage = useCallback(
-    (chunk: string) => {
+    (blocks: TBlock[]) => {
       setMessages((messages) => {
         const lastMessage = messages[messages.length - 1]
-        const updatedMessages = messages.slice(0, -1)
 
-        return [
-          ...updatedMessages,
-          { role: 'assistant', content: lastMessage.content + chunk },
-        ]
+        // This shouldn't happen
+        if (lastMessage.role !== 'assistant') return messages
+
+        lastMessage.blocks.push(...blocks)
+        return [...messages.slice(0, -1), lastMessage]
       })
     },
     [setMessages],
@@ -30,12 +30,19 @@ export default function Home() {
     setMessages([
       ...messages,
       { role: 'user', content },
-      { role: 'assistant', content: '' },
+      { role: 'assistant', blocks: [] },
     ])
 
     await generateSearchCompletion({
       messages: [...messages, { role: 'user', content }],
-      onChunkReceived: updateLastMessage,
+      onChunkReceived: (chunk) => {
+        const blocks = chunk
+          .split('\n')
+          .filter(Boolean)
+          .map((block) => JSON.parse(block.trim()))
+
+        updateLastMessage(blocks)
+      },
     })
   }
 

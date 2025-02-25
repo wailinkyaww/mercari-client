@@ -1,6 +1,12 @@
-import { Skeleton } from '@/components/skeleton'
-import type { TMessage } from '@/services/search.service'
 import Image from 'next/image'
+import { Block } from '@/components/block'
+import { Skeleton } from '@/components/skeleton'
+
+import type {
+  TAssistantMessage,
+  TMessage,
+  TUserMessage,
+} from '@/services/search.service'
 
 function ChatProfile(props: { role: 'assistant' | 'user' }) {
   const { role } = props
@@ -19,13 +25,13 @@ function ChatProfile(props: { role: 'assistant' | 'user' }) {
         alt='Mercari Logo'
         width={36}
         height={36}
-        className='rounded-full'
+        className='rounded-full shrink-0 w-9 h-9'
       />
     )
   }
 }
 
-function UserMessage(props: { message: { role: 'user'; content: string } }) {
+function UserMessage(props: { message: TUserMessage }) {
   const { message } = props
 
   return (
@@ -36,15 +42,18 @@ function UserMessage(props: { message: { role: 'user'; content: string } }) {
   )
 }
 
-function AssistantMessage(props: {
-  message: { role: 'assistant'; content: string }
-}) {
+function AssistantMessage(props: { message: TAssistantMessage }) {
   const { message } = props
 
   return (
     <div className='flex gap-4'>
       <ChatProfile role={message.role} />
-      <p className='mt-1'>{message.content}</p>
+
+      <div>
+        {message.blocks.map((block, index) => (
+          <Block block={block} key={index} />
+        ))}
+      </div>
     </div>
   )
 }
@@ -69,8 +78,8 @@ export function Message(props: { message: TMessage }) {
     return <UserMessage message={message} />
   }
 
-  // if the content is empty, we assumed that we are waiting for the response from the API.
-  if (message.role === 'assistant' && message.content === '') {
+  // if the blocks is empty array, we assumed that we are waiting for the response from the API.
+  if (message.role === 'assistant' && message.blocks.length === 0) {
     return <AssistantLoadingMessage />
   }
 
