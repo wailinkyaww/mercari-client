@@ -50,23 +50,19 @@ export default function Home() {
     // height calculation - full screen height minus margin on top and bottom
     <div
       className={twMerge(
-        'flex flex-col max-w-2xl md:mx-auto m-4 h-[calc(100vh-2rem)] justify-between',
+        'flex flex-col max-w-2xl md:mx-auto m-4 h-[calc(100vh-2rem)] justify-between gap-4',
         messages.length === 0 && 'justify-center'
       )}
     >
-      <div className="flex flex-col gap-4">
+      {messages.length > 0 && <div className="flex flex-col gap-4 h-full overflow-y-auto">
         {messages.map((message, index) => {
           return <Message key={index} message={message} />
         })}
-      </div>
+      </div>}
 
-      {messages.length === 0 && (
-        <div className="mb-10">
-          <h2 className="text-3xl font-bold text-center text-[#6778f5]">
-            Mercari Shopper
-          </h2>
-        </div>
-      )}
+      {messages.length === 0 && <h2 className="text-2xl font-bold text-center text-[#6778f5]">
+        Mercari Shopper
+      </h2>}
 
       <ChatInput onSubmit={onUserMessageSubmit} />
     </div>

@@ -8,7 +8,7 @@ export function ChatInput(props: { onSubmit: (message: string) => void }) {
     <input
       ref={textInputRef}
       type='text'
-      className='border border-neutral-300 rounded-full py-2 px-4 w-full text-lg'
+      className='border border-neutral-300 rounded py-2 px-4 w-full text-lg shrink-0'
       placeholder='What do you want to buy today?'
       onKeyUp={(event) => {
         // on enter key press

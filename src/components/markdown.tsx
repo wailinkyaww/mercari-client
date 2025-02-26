@@ -48,9 +48,6 @@ export function Markdown(props: { markdownContent: string }) {
               />
             )
           },
-          p: ({ ...props }) => {
-            return <p {...props} className='text-neutral-800' />
-          },
           ul: ({ ...props }) => {
             return <ul {...props} className='px-5' />
           },

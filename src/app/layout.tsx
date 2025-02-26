@@ -25,7 +25,9 @@ export default function RootLayout({ children }: Readonly<{
     <body
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
-    {children}
+    <main className='h-[100vh] border border-black'>
+      {children}
+    </main>
     </body>
     </html>
   )
