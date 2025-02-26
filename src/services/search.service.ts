@@ -10,37 +10,37 @@ export type TProduct = {
 
 export type TBlock =
   | {
-      blockType: 'status_update'
-      status: 'generic'
-      message: string
-    }
+  blockType: 'status_update'
+  status: 'generic'
+  message: string
+}
   | {
-      blockType: 'status_update'
-      status: 'extracting_filters'
-      message: string
-    }
+  blockType: 'status_update'
+  status: 'extracting_filters'
+  message: string
+}
   | {
-      blockType: 'status_update'
-      status: 'filters_extraction_done'
-      message: string
-      filters: object
-    }
+  blockType: 'status_update'
+  status: 'filters_extraction_done'
+  message: string
+  filters: object
+}
   | {
-      blockType: 'status_update'
-      status: 'scraping_products'
-      message: string
-      url: string
-    }
+  blockType: 'status_update'
+  status: 'scraping_products'
+  message: string
+  url: string
+}
   | {
-      blockType: 'status_update'
-      status: 'products_scraped'
-      message: string
-      products: TProduct[]
-    }
+  blockType: 'status_update'
+  status: 'products_scraped'
+  message: string
+  products: TProduct[]
+}
   | {
-      blockType: 'completion_response'
-      content: string
-    }
+  blockType: 'completion_response'
+  content: string
+}
 
 export type TUserMessage = { role: 'user'; content: string }
 export type TAssistantMessage = { role: 'assistant'; blocks: TBlock[] }
@@ -77,20 +77,20 @@ export async function generateSearchCompletion(payload: {
         if (message.role === 'assistant') {
           return {
             role: message.role,
-            message: message.blocks
+            content: message.blocks
               .filter((b) => b.blockType === 'completion_response')
               .map((b) => b.content)
-              .join(''),
+              .join('')
           }
         }
 
         return {
           role: message.role,
-          content: message.content,
+          content: message.content
         }
-      }),
+      })
     }),
-    signal,
+    signal
   })
 
   if (!response.ok) {
