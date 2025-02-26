@@ -40,7 +40,6 @@ export default function Home() {
           .split('\n')
           .filter(Boolean)
           .map((block) => JSON.parse(block.trim()))
-        console.log(blocks)
 
         updateLastMessage(blocks)
       },

@@ -76,7 +76,7 @@ export function Block(props: { block: TBlock }) {
   }
 
   // Below to the end will be the status update blocks, as we now only have two types of blocks
-  if (block.status === 'query_analysis') {
+  if (block.status === 'generic') {
     return (
       <div className='py-1'>
         <p>{block.message}</p>

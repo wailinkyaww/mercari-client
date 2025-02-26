@@ -10,7 +10,7 @@ export type TProduct = {
 export type TBlock =
   | {
       blockType: 'status_update'
-      status: 'query_analysis'
+      status: 'generic'
       message: string
     }
   | {
