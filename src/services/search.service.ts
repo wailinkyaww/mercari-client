@@ -5,6 +5,7 @@ export type TProduct = {
   product_price: string
   product_is_on_sale: boolean
   product_image_url: string
+  product_url: string
 }
 
 export type TBlock =
