@@ -63,7 +63,6 @@ function ProductCard(props: { product: TProduct }) {
 
       <div>
         <p className='line-clamp-1'>{product.product_name}</p>
-        <p>{product.product_price}</p>
       </div>
     </div>
   )
@@ -125,7 +124,7 @@ export function Block(props: { block: TBlock }) {
       <div className='py-1 space-y-2'>
         <p>{block.message}</p>
 
-        <div className='flex gap-4 overflow-y-auto max-w-2xl'>
+        <div className='flex gap-4 overflow-y-auto max-w-xl'>
           {block.products.map((product, index) => {
             return <ProductCard product={product} key={index} />
           })}

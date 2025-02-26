@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { Block } from '@/components/block'
 import { Skeleton } from '@/components/skeleton'
+import { Markdown } from '@/components/markdown'
 
 import type {
   TAssistantMessage,
@@ -57,17 +58,27 @@ function UserMessage(props: { message: TUserMessage }) {
 function AssistantMessage(props: { message: TAssistantMessage }) {
   const { message } = props
 
+  const statusBlocks = message.blocks.filter(
+    (b) => b.blockType === 'status_update',
+  )
+
+  const llmResponse = message.blocks
+    .filter((b) => b.blockType === 'completion_response')
+    .reduce((acc, b) => acc + b.content, '')
+
   return (
     <div className='flex gap-4'>
       <ChatProfile role={message.role} />
 
       <div className='flex flex-col'>
-        {message.blocks.map((block, index) => (
+        {statusBlocks.map((block, index) => (
           <div key={index} className='flex flex-col items-start'>
             <Block block={block} />
             {index !== message.blocks.length - 1 && <Divider />}
           </div>
         ))}
+
+        {llmResponse.length > 0 && <Markdown markdownContent={llmResponse} />}
       </div>
     </div>
   )
