@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Step Instructions - Frontend
 
-## Getting Started
+We use bun and typescript on frontend.
+The web framework is NextJS.
 
-First, run the development server:
+Bun installation - please use bun version `1.1.45`
+```shell
+# on macOS / linux
+curl -fsSL https://bun.sh/install | bash
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+curl -fsSL https://bun.sh/install | bash -s "bun-v1.1.45"
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**If you have any other OS, please refer to - https://bun.sh/docs/installation **
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create `.env` file at the root of directory
+```env
+# make sure you point to backend API server
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Install packages. Run following command to install it.
+```shell
+# this will create a node module folder
+bun install
+```
 
-## Learn More
+Run the frontend app.
+```shell
+bun run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This will start the frontend client at - http://localhost:3000
+You can go to browser and interact with the agent at - http://localhost:3000
